@@ -1,4 +1,6 @@
-const initialFriends = [
+import { useState } from "react";
+
+let initialFriends = [
   {
     id: 118836,
     name: "Clark",
@@ -19,13 +21,37 @@ const initialFriends = [
   },
 ];
 
+function Button({ children, handleButton }) {
+  return (
+    <button className="button" onClick={handleButton}>
+      {children}
+    </button>
+  );
+}
+////////////
 export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
+  const [showFriend, setShowFriend] = useState(false);
+  function handleAddFriend(friend) {
+    setFriends((friends) => [...friends, friend]);
+  }
+  function handleShowFriend() {
+    setShowFriend((val) => !val);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <Friends />
-        <AddFriend />
-        <Button>Add friend</Button>
+        <Friends friend={friends} />
+        {showFriend && (
+          <AddFriend
+            onAddFriend={handleAddFriend}
+            onSetFriend={setShowFriend}
+          />
+        )}
+        <Button handleButton={handleShowFriend}>
+          {showFriend ? "Close" : "Add friend"}
+        </Button>
       </div>
       <Bill />
       {/* <Close /> */}
@@ -33,10 +59,10 @@ export default function App() {
   );
 }
 
-function Friends() {
+function Friends({ friend }) {
   return (
     <ul>
-      {initialFriends.map((data) => (
+      {friend.map((data) => (
         <Friend friend={data} key={data.id} />
       ))}
     </ul>
@@ -65,18 +91,42 @@ function Friend({ friend }) {
   );
 }
 
-function Button({ children }) {
-  return <button className="button">{children}</button>;
-}
+function AddFriend({ onAddFriend, onSetFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+  function handleAdd(e) {
+    const id = crypto.randomUUID();
+    e.preventDefault();
 
-function AddFriend() {
+    if (!name || !image) return;
+    const newFriend = {
+      id,
+      name,
+      image: `${image}?=${id}`,
+      balance: 0,
+    };
+    onAddFriend(newFriend);
+    onSetFriend(false);
+
+    // console.log(newFriend);
+  }
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleAdd}>
       <label>🤝Friend</label>
-      <input type="text" value="" onChange=""></input>
+      <input
+        type="text"
+        placeholder="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      ></input>
 
       <label>🖼️Image URL</label>
-      <input type="text" value="" onChange=""></input>
+      <input
+        type="text"
+        placeholder="www.image.com"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      ></input>
       <Button>Add</Button>
     </form>
   );
