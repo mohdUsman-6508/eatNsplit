@@ -24,9 +24,10 @@ export default function App() {
     <div className="app">
       <div className="sidebar">
         <Friends />
+        <AddFriend />
+        <Button>Add friend</Button>
       </div>
-      {/* <Bill /> */}
-      {/* <Add /> */}
+      <Bill />
       {/* <Close /> */}
     </div>
   );
@@ -59,48 +60,47 @@ function Friend({ friend }) {
           </p>
         )}
       </p>
-      <button className="button" onClick="">
-        Select
-      </button>
+      <Button>Select</Button>
     </li>
   );
 }
 
-// function Bill({ name }) {
-//   return (
-//     <div>
-//       <h1>SPLIT A BILL WITH {name}</h1>
-//       <form>
-//         <label>bill value</label>
-//         <input type="text" value="" onChange=""></input>
-//         <label>your expenses</label>
-//         <input type="text" value="" onChange=""></input>
-//         <label>{name}'s expenses</label>
-//         <input type="text" value="" onChange=""></input>
-//         <label>who is paying the bill?</label>
-//         <select type="text" value="" onChange="">
-//           <option value="">You</option>
-//           <option value="">{name}</option>
-//         </select>
-//         <button onClick="">split bill</button>
-//       </form>
-//     </div>
-//   );
-// }
+function Button({ children }) {
+  return <button className="button">{children}</button>;
+}
 
-// function Add() {
-//   return (
-//     <div>
-//       <form>
-//         <label>Friend name</label>
-//         <input type="text" value="" onChange=""></input>
-//         <label>Image URL</label>
-//         <input type="text" value="" onChange=""></input>
-//         <button>Add</button>
-//       </form>
-//     </div>
-//   );
-// // }
+function AddFriend() {
+  return (
+    <form className="form-add-friend">
+      <label>🤝Friend</label>
+      <input type="text" value="" onChange=""></input>
+
+      <label>🖼️Image URL</label>
+      <input type="text" value="" onChange=""></input>
+      <Button>Add</Button>
+    </form>
+  );
+}
+
+function Bill({}) {
+  return (
+    <form className="form-split-bill">
+      <h2>Split a bill with X</h2>
+      <label>💵Bill value</label>
+      <input type="text" value="" onChange=""></input>
+      <label>💶Your expenses</label>
+      <input type="text" value="" onChange=""></input>
+      <label>💷X's expenses</label>
+      <input type="text" value="" onChange="" disabled></input>
+      <label>💸who is paying the bill?</label>
+      <select type="text" value="" onChange="">
+        <option value="">You</option>
+        <option value="">X</option>
+      </select>
+      <Button>Split bill</Button>
+    </form>
+  );
+}
 // function Close() {
 //   return (
 //     <div>
